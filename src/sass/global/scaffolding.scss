@@ -1,0 +1,12 @@
+// Удобное управление rem
+
+html {
+  $html-size: 10px;
+  font-size: $html-size;
+}
+
+// Защита от переполнения
+img {
+  max-width: 100%;
+  height: auto;
+}
