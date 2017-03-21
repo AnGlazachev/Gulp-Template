@@ -11,7 +11,6 @@ var
     autoprefixer = require('gulp-autoprefixer'),     // Подключаем автопрефиксер
     csso         = require('gulp-csso'),             // Подключаем пакет для минификации CSS
     combineMq     = require('gulp-combine-mq'),      // Группируем media запросы
-    uncss        = require('gulp-uncss'),            // Подключаем удаление неиспользуемых стилей в CSS
 
     imagemin     = require('gulp-imagemin'),         // Подключаем библиотеку для сжатия изображений
     spritesmith  = require('gulp.spritesmith'),      // Подключаем генерацию спрайтов
@@ -24,20 +23,12 @@ var
 gulp.task('sass', function(){                    // Создаем таск SASS
     return gulp.src('src/sass/style.scss')       // Берем источник
         .pipe(plumber())                         // отлавливаем ошибки при компиляции из SASS в CSS
-        .pipe(sass().on('error', sass.logError)) // Преобразуем SASS в CSS посредством gulp-sass
+        .pipe(sass().on('error', sass.logError)) // Преобразуем SASS в CSS
         .pipe(autoprefixer(
             ['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true }
         ))                                        // Создаем префиксы
-        .pipe(gulp.dest('src/css'))              // Выгружаем результат в папку src/css
         .pipe(combineMq({beautify: false}))      // Группируем медиа запросы
         .pipe(size({                             // Вывод в консоль размер CSS
-            showFiles: true
-        }))
-        .pipe(uncss({                           // Удаление неиспользуемых стилей
-            html: ['src/**/*.html'],
-            ignore: [/^.main-nav/, /^.mobile-menu/]
-        }))
-        .pipe(size({                             // Вывод в консоль размер CSS после uncss
             showFiles: true
         }))
         .pipe(gulp.dest('src/css/'))
@@ -50,8 +41,7 @@ gulp.task('sass', function(){                    // Создаем таск SASS
             showFiles: true,
             gzip: true
         }))
-        .pipe(gulp.dest('src/css'))              // Выгружаем в папку src/css
-        .pipe(browserSync.reload({stream: true}));
+        .pipe(gulp.dest('src/css'))              // Выгружаем минифицированный css
 });
 
 
@@ -96,7 +86,7 @@ gulp.task('scripts', function() {
             showFiles: true,
             gzip: true
         }))
-        .pipe(gulp.dest('src/js'))       // Выгружаем в папку src/js
+        .pipe(gulp.dest('src/js'))       // Выгружаем результат
         .pipe(browserSync.reload({stream: true}));
 });
 
