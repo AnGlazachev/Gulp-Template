@@ -21,7 +21,7 @@ var
 
 // Настройка SASS
 gulp.task('sass', function(){                    // Создаем таск SASS
-    return gulp.src('src/sass/style.scss')       // Берем источник
+    return gulp.src('src/sass/main.scss')        // Берем источник
         .pipe(plumber())                         // отлавливаем ошибки при компиляции из SASS в CSS
         .pipe(sass().on('error', sass.logError)) // Преобразуем SASS в CSS
         .pipe(autoprefixer(
