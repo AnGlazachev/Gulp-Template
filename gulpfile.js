@@ -18,12 +18,17 @@ var
 
     uglify       = require ('gulp-uglifyjs');        // Подключаем минификатор для JS
 
+var $ = {
+    gutil: require('gulp-util'),
+    svgSprite: require('gulp-svg-sprite'),
+    size: require('gulp-size')
+};
 
 // Настройка SASS
-gulp.task('sass', function(){                    // Создаем таск SASS
-    return gulp.src('src/sass/main.scss')        // Берем источник
-        .pipe(plumber())                         // отлавливаем ошибки при компиляции из SASS в CSS
-        .pipe(sass().on('error', sass.logError)) // Преобразуем SASS в CSS
+gulp.task('sass', function(){                      // Создаем таск SASS
+    return gulp.src('src/sass/main.scss') // Берем источник
+        .pipe(plumber())                           // отлавливаем ошибки при компиляции из SASS в CSS
+        .pipe(sass().on('error', sass.logError))   // Преобразуем SASS в CSS
         .pipe(autoprefixer(
             ['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true }
         ))                                        // Создаем префиксы
@@ -41,12 +46,43 @@ gulp.task('sass', function(){                    // Создаем таск SASS
             showFiles: true,
             gzip: true
         }))
-        .pipe(gulp.dest('src/css'))              // Выгружаем минифицированный css
+        .pipe(gulp.dest('src/css/'))              // Выгружаем минифицированный css
+        .pipe(browserSync.reload({stream: true}));
 });
 
+// Создание SVG спрайта
+gulp.task('svgSprite', function () {
+    return gulp.src('src/img/icons-svg/*.svg')
+        .pipe($.svgSprite({
+            shape: {
+                spacing: {
+                    padding: 5
+                }
+            },
+            mode: {
+                css: {
+                    dest: "./",
+                    layout: "diagonal",
+                    sprite: "../images/sprite.svg",
+                    bust: false,
+                    render: {
+                        scss: {
+                            dest: "../sass/global/sprite-svg.scss",
+                            template: "src/sass/templates/_sprite_template.scss"
+                        }
+                    }
+                }
+            },
+            variables: {
+                mapname: "icons"
+            }
+        }))
+        .pipe(gulp.dest('src/web/images/'))
+        .pipe(browserSync.reload({stream: true}));
+});
 
 // Настройка Browser-sync (автоперезагрузка)
-gulp.gulp('browser-sync', function() {       // Создаем таск browser-sync
+gulp.task('browser-sync', function() {       // Создаем таск browser-sync
     browserSync({                            // Выполняем browserSync
         server: {                            // Определяем параметры сервера
             baseDir: 'src'                   // Директория для сервера - src
@@ -54,20 +90,6 @@ gulp.gulp('browser-sync', function() {       // Создаем таск browser-
         notify: false                        // Отключаем уведомления
     });
 });
-
-
-// Создание спрайта
-gulp.task('sprite', function() {
-    var spriteData =
-        gulp.src('src/img/icons/*.{png,jpg,gif}')      // путь, откуда берем картинки для спрайта
-            .pipe(spritesmith({
-                imgName: '../img/sprite.png',
-                cssName: 'sprite.css'
-            }));
-    spriteData.img.pipe(gulp.dest('src/img/sprites')); // путь, куда сохраняем картинку
-    spriteData.css.pipe(gulp.dest('src/sass/global')); // путь, куда сохраняем стили
-});
-
 
 // Минификация JS
 gulp.task('scripts', function() {
@@ -90,15 +112,11 @@ gulp.task('scripts', function() {
         .pipe(browserSync.reload({stream: true}));
 });
 
-
 // Вся работа в фоне
-gulp.task('watch', ['browser-sync', 'sass', 'scripts', 'svgSprite'], function() {
+gulp.task('watch', ['browser-sync','sass', 'svgSprite'], function() {
     gulp.watch('src/sass/**/*.scss', ['sass']);     // Наблюдение за sass файлами в папке sass
-    gulp.watch('src/*.html', browserSync.reload);   // Наблюдение за HTML файлами в корне проекта
-    gulp.watch('src/js/**/*.js', ['scripts']);      // Наблюдение за JS файлами в папке js
-    gulp.watch('src/img/**/*.svg', ['svgSprite']);  // Наблюдение за SVG файлами в папке img
+    gulp.watch('src/images/**/*.svg', ['svgSprite']);  // Наблюдение за SVG файлами
 });
-
 
 // --> Перенос проекта в продакшн --> //
 // Очистка папки build
@@ -109,7 +127,7 @@ gulp.task('clean', function() {
 
 //Сжатие загружаемых изображений
 gulp.task('img', function() {
-    return gulp.src('src/img/**/*.{png,jpg,gif}')   // Берем все изображения из src
+    return gulp.src('src/img/**/*.{png,svg,jpg,gif}')   // Берем все изображения из src
         .pipe(cache(imagemin({                      // Сжимаем их с наилучшими настройками с учетом кеширования
             interlaced: true,
             optimizationlevel: 3,

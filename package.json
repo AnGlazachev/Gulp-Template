@@ -1,7 +1,7 @@
 {
-  "name": "Gulp-Template",
+  "name": "Evromed",
   "version": "1.0.0",
-  "description": "Gulp Template",
+  "description": "Evromed",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,20 +21,20 @@
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^3.1.0",
     "gulp-size": "^2.1.0",
+    "gulp-svg-sprite": "^1.3.6",
     "gulp-uglifyjs": "^0.6.2",
+    "gulp-uncss": "^1.0.6",
     "gulp-util": "^3.0.8",
     "gulp.spritesmith": "^6.3.0",
-    "imagemin-pngquant": "^5.0.0"
+    "imagemin-pngquant": "^5.0.0",
+    "sass-mq": "^3.2.9"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Stilon/gulp-template.git"
+    "url": "git+https://github.com/Stilon/Evromed.git"
   },
   "bugs": {
-    "url": "https://github.com/Stilon/gulp-template/issues"
+    "url": "https://github.com/Stilon/Evromed/issues"
   },
-  "homepage": "https://github.com/Stilon/gulp-template#readme",
-  "dependencies": {
-    "sass-mq": "^3.2.9"
-  }
+  "homepage": "https://github.com/Stilon/Evromed#readme"
 }

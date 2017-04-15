@@ -1,12 +1,24 @@
-// Удобное управление rem
-
-html {
-  $html-size: 10px;
-  font-size: $html-size;
-}
-
 // Защита от переполнения
 img {
   max-width: 100%;
   height: auto;
+}
+
+// Обнуление отступов по умолчанию у списков
+ul, li {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style-position: inside;
+}
+
+p {
+  margin: 0;
+}
+
+button {
+  border: none;
+  background: none;
 }
