@@ -63,7 +63,7 @@ gulp.task('svgSprite', function () {
                 css: {
                     dest: "./",
                     layout: "diagonal",
-                    sprite: "../images/sprite.svg",
+                    sprite: "../img/sprite.svg",
                     bust: false,
                     render: {
                         scss: {
@@ -77,7 +77,7 @@ gulp.task('svgSprite', function () {
                 mapname: "icons"
             }
         }))
-        .pipe(gulp.dest('src/web/images/'))
+        .pipe(gulp.dest('src/img/'))
         .pipe(browserSync.reload({stream: true}));
 });
 
@@ -115,7 +115,8 @@ gulp.task('scripts', function() {
 // Вся работа в фоне
 gulp.task('watch', ['browser-sync','sass', 'svgSprite'], function() {
     gulp.watch('src/sass/**/*.scss', ['sass']);     // Наблюдение за sass файлами в папке sass
-    gulp.watch('src/images/**/*.svg', ['svgSprite']);  // Наблюдение за SVG файлами
+    gulp.watch('src/img/**/*.svg', ['svgSprite']);  // Наблюдение за SVG файлами
+    gulp.watch('src/*.html');  // Наблюдение за html
 });
 
 // --> Перенос проекта в продакшн --> //
@@ -144,7 +145,7 @@ gulp.task('img', function() {
 gulp.task('build', ['clean', 'img', 'sass', 'scripts'], function() {
 
     gulp.src([                        // Переносим библиотеки в продакшен
-        'src/css/style.min.css'
+        'src/css/main.min.css'
     ])
         .pipe(gulp.dest('build/css'));
 
@@ -165,7 +166,7 @@ gulp.task('build', ['clean', 'img', 'sass', 'scripts'], function() {
 gulp.task('GitHubPages', ['clean', 'img', 'sass', 'scripts'], function() {
 
     gulp.src([                        // Переносим библиотеки в продакшен
-        'src/css/style.min.css'
+        'src/css/main.min.css'
     ])
         .pipe(gulp.dest('docs/css'));
 
