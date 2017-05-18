@@ -99,7 +99,7 @@ gulp.task('scripts', function() {
         .pipe(size({                    // Вывод в консоль размер JS
             showFiles: true
         }))
-        .pipe(concat('function.min.js'))
+        .pipe(concat('main.js'))
         .pipe(uglify())                  // Сжимаем JS файл
         .pipe(size({                     // Вывод в консоль размер JS после минификации
             showFiles: true
@@ -113,10 +113,11 @@ gulp.task('scripts', function() {
 });
 
 // Вся работа в фоне
-gulp.task('watch', ['browser-sync','sass', 'svgSprite'], function() {
+gulp.task('watch', ['browser-sync', 'sass', 'scripts', 'svgSprite'], function() {
     gulp.watch('src/sass/**/*.scss', ['sass']);     // Наблюдение за sass файлами в папке sass
-    gulp.watch('src/img/**/*.svg', ['svgSprite']);  // Наблюдение за SVG файлами
-    gulp.watch('src/*.html');  // Наблюдение за html
+    gulp.watch('src/*.html', browserSync.reload);   // Наблюдение за HTML файлами в корне проекта
+    gulp.watch('src/js/modules/*.js', ['scripts']);      // Наблюдение за JS файлами в папке js
+    gulp.watch('src/img/icons-svg/*.svg', ['svgSprite']);  // Наблюдение за SVG файлами в папке img
 });
 
 // --> Перенос проекта в продакшн --> //
