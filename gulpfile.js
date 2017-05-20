@@ -153,7 +153,8 @@ gulp.task('build', ['clean', 'sass', 'scripts'], function() {
 gulp.task('github', ['clean', 'sass', 'scripts'], function() {
 
     gulp.src([                        // Переносим библиотеки в продакшен
-        'src/css/main.min.css'
+        'src/css/main.min.css',
+        'src/css/main.css'
     ])
         .pipe(gulp.dest('docs/css'));
 
