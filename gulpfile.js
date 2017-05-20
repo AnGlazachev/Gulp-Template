@@ -127,23 +127,9 @@ gulp.task('clean', function() {
 });
 
 
-//Сжатие загружаемых изображений
-gulp.task('img', function() {
-    return gulp.src('src/img/**/*.{png,svg,jpg,gif}')   // Берем все изображения из src
-        .pipe(cache(imagemin({                      // Сжимаем их с наилучшими настройками с учетом кеширования
-            interlaced: true,
-            optimizationlevel: 3,
-            progressive: true,
-            svgoPlugins: [{removeViewBox: false}],
-            use: [pngquant()]
-        })))
-        .pipe(gulp.dest('build/img'))              // Выгружаем на продакшен
-        .pipe(gulp.dest('docs/img'));
-});
-
 
 // Перенос файлов в продакшн
-gulp.task('build', ['clean', 'img', 'sass', 'scripts'], function() {
+gulp.task('build', ['clean', 'sass', 'scripts'], function() {
 
     gulp.src([                        // Переносим библиотеки в продакшен
         'src/css/main.min.css'
@@ -164,7 +150,7 @@ gulp.task('build', ['clean', 'img', 'sass', 'scripts'], function() {
 });
 
 
-gulp.task('GitHubPages', ['clean', 'img', 'sass', 'scripts'], function() {
+gulp.task('github', ['clean', 'sass', 'scripts'], function() {
 
     gulp.src([                        // Переносим библиотеки в продакшен
         'src/css/main.min.css'
