@@ -152,11 +152,11 @@ gulp.task('build', ['clean', 'sass', 'scripts'], function() {
 
 // --> Перенос проекта в GitHubPages --> //
 // Очистка папки docs
-gulp.task('clean', function() {
+gulp.task('cleangit', function() {
     return del.sync('docs');                       // Удаляем папку build перед сборкой
 });
 
-gulp.task('github', ['sass', 'scripts'], function() {
+gulp.task('github', ['sass', 'scripts', 'cleangit'], function() {
 
     gulp.src([                        // Переносим библиотеки в продакшен
         'src/css/main.min.css',
